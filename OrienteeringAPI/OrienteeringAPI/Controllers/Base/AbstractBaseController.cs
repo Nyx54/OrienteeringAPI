@@ -6,6 +6,7 @@ using OrienteeringAPI.Repositories.Base;
 using OrienteeringAPI.Services.Base;
 using OrienteeringModels.Dtos;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,8 +37,22 @@ namespace OrienteeringAPI.Controllers.Base
         {
             var log = await _logRequestRepository.Add(CreateRequestLog());
             var result = await service.GetAll();
-            await _logRequestRepository.AddResponse(UpdateResponseLog(ref log, result));
+            await _logRequestRepository.Update(UpdateResponseLog(ref log, result));
             return result;
+        }
+
+        // GET: api/[controller]/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TEntity>> Get(long id, string IdCentre)
+        {
+            var log = await _logRequestRepository.Add(CreateRequestLog());
+            var entity = await service.Get(id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+            await _logRequestRepository.Update(UpdateResponseLog(ref log, entity));
+            return entity;
         }
 
         // PUT: api/[controller]/5
@@ -72,15 +87,27 @@ namespace OrienteeringAPI.Controllers.Base
             return entity;
         }
 
-        protected LogAPI UpdateResponseLog(ref LogAPI log, object responseObject)
+        protected LogAPI UpdateResponseLog(ref LogAPI log, object responseObject, string exceptionMessage = null)
         {
-            StringBuilder listOfProperties = new StringBuilder($"{{{Environment.NewLine}");
+            StringBuilder ResponseBody = new StringBuilder($"{{{Environment.NewLine}");
 
-            responseObject.GetType().GetProperties().ToList().ForEach(p =>
-            listOfProperties.Append($"{p.Name}: {p.GetValue(responseObject)}{Environment.NewLine}"));
-            listOfProperties.Append($"{Environment.NewLine}}}");
+            var objectType = responseObject.GetType();
+            if (responseObject is IList && objectType.IsGenericType && objectType.GetGenericTypeDefinition().IsAssignableFrom(typeof(List<>)))
+            {
+                Type elementType = objectType.GenericTypeArguments.Single();
+                var count = ((IList)responseObject).Count;
+                ResponseBody.Append($"List of {elementType}{Environment.NewLine}");
+                ResponseBody.Append($"Number of elements: {count}");
+                ResponseBody.Append($"{Environment.NewLine}}}");
+            }
+            else
+            {
+                objectType.GetProperties().ToList().ForEach(p =>
+                ResponseBody.Append($"{p.Name}: {p.GetValue(responseObject)}{Environment.NewLine}"));
+                ResponseBody.Append($"{Environment.NewLine}}}");
+            }
 
-            log.Response = listOfProperties.ToString();
+            log.Response = ResponseBody.ToString();
             if (responseObject != null && responseObject is ErrorModel)
             {
                 log.StatusCode = ((ErrorModel)responseObject).StatusCode;
@@ -90,6 +117,11 @@ namespace OrienteeringAPI.Controllers.Base
                 log.StatusCode = StatusCodes.Status200OK;
             }
             log.RespondedOn = DateTime.Now;
+
+            if (!string.IsNullOrEmpty(exceptionMessage))
+            {
+                log.Exception = exceptionMessage;
+            }
 
             return log;
         }

@@ -9,6 +9,6 @@ namespace OrienteeringAPI.Repositories.Base
     public interface ILogRepository
     {
         Task<LogAPI> Add(LogAPI entity);
-        Task<LogAPI> AddResponse(LogAPI entity);
+        Task<LogAPI> Update(LogAPI entity);
     }
 }

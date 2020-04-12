@@ -1,0 +1,14 @@
+CREATE TABLE LogAPI
+(
+	Id BIGINT NOT NULL IDENTITY(1, 1),
+	Path NVARCHAR(MAX),
+	QueryString NVARCHAR(MAX),
+	Method NVARCHAR(MAX),
+	Body NVARCHAR(MAX),
+	RequestedOn DATETIME,
+	Response NVARCHAR(MAX),
+	RespondedOn DATETIME,
+	StatusCode INT,
+	Exception NVARCHAR(MAX),
+	PRIMARY KEY(Id)
+)

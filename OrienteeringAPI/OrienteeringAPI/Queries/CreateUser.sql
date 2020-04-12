@@ -1,0 +1,10 @@
+CREATE TABLE OrienteeringUser
+(
+	Id BIGINT NOT NULL IDENTITY(1, 1),
+	Login NVARCHAR(MAX),
+	FirstName NVARCHAR(MAX),
+	LastName NVARCHAR(MAX),
+	Password NVARCHAR(MAX),
+	Profil CHAR,
+	PRIMARY KEY(Id)
+)

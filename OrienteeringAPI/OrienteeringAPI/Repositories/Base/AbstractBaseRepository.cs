@@ -1,7 +1,8 @@
-﻿using OrienteeringAPI.Data;
-using System;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using OrienteeringAPI.Data;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace OrienteeringAPI.Repositories.Base
@@ -13,40 +14,52 @@ namespace OrienteeringAPI.Repositories.Base
         protected OrienteeringAPIContext context;
         protected readonly OrienteeringAPIContextFactory _factory;
 
-        protected const string _GetAllEndPoint = "GetAll";
-        protected const string _GetByKeysEndPoint = "Get";
-        protected const string _AddEndPoint = "POST";
-        protected const string _PutEndPoint = "PUT";
-        protected const string _CustomDataType = "MCentreDto";
-
         public AbstractBaseRepository(TFactory factory)
         {
             _factory = factory;
         }
 
-        public Task<List<TEntity>> GetAll()
+        public async Task<TEntity> Add(TEntity entity)
         {
-            throw new NotImplementedException();
+            this.context = _factory.CreateDbContext();
+            context.Set<TEntity>().Add(entity);
+            await context.SaveChangesAsync();
+            return entity;
         }
 
-        public Task<TEntity> Get(long i)
+        public async Task<TEntity> Delete(long id)
         {
-            throw new NotImplementedException();
+            this.context = _factory.CreateDbContext();
+            var entity = await context.Set<TEntity>().FindAsync(id);
+            if (entity == null)
+            {
+                return entity;
+            }
+
+            context.Set<TEntity>().Remove(entity);
+            await context.SaveChangesAsync();
+
+            return entity;
         }
 
-        public Task<TEntity> Add(TEntity entity)
+        public async Task<TEntity> Get(long id)
         {
-            throw new NotImplementedException();
+            this.context = _factory.CreateDbContext();
+            return await context.Set<TEntity>().FindAsync(id);
         }
 
-        public Task<TEntity> Update(TEntity entity)
+        public async Task<List<TEntity>> GetAll()
         {
-            throw new NotImplementedException();
+            this.context = _factory.CreateDbContext();
+            return await context.Set<TEntity>().ToListAsync();
         }
 
-        public Task<TEntity> Delete(long id)
+        public async Task<TEntity> Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            this.context = _factory.CreateDbContext();
+            context.Entry(entity).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return entity;
         }
     }
 }

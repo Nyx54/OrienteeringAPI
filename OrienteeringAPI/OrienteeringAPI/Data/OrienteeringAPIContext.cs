@@ -18,14 +18,19 @@ namespace OrienteeringAPI.Data
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<LogAPI>()
+               .HasKey(Dto => new { Dto.Id });
+
+            modelBuilder.Entity<OrienteeringUser>()
                .HasKey(Dto => new { Dto.Id });
         }
 
 
         #region DbSet
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<LogAPI> LogAPI { get; set; }
+
+        public DbSet<OrienteeringUser> OrienteeringUser { get; set; }
 
         #endregion
     }

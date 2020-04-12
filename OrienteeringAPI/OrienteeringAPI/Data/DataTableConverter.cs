@@ -15,14 +15,13 @@ namespace OrienteeringAPI.Data
             PropertyInfo[] propertyInfo = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (PropertyInfo prop in propertyInfo)
             {
-                convertedTable.Columns.Add(prop.Name);
+                convertedTable.Columns.Add(new DataColumn(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType));
             }
             var row = convertedTable.NewRow();
-            var values = new object[propertyInfo.Length];
             for (int i = 0; i < propertyInfo.Length; i++)
             {
-                var test = propertyInfo[i].GetValue(data, null);
-                row[i] = test ?? DBNull.Value;
+                var objectValue = propertyInfo[i].GetValue(data, null);
+                row[i] = objectValue ?? DBNull.Value;
             }
             convertedTable.Rows.Add(row);
             return convertedTable;

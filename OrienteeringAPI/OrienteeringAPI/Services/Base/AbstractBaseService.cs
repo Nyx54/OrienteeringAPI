@@ -1,4 +1,5 @@
 ﻿using OrienteeringAPI.Repositories.Base;
+using OrienteeringModels.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace OrienteeringAPI.Services.Base
 {
     public abstract class AbstractBaseService<TRepository, TEntity> : IService<TEntity>
          where TRepository : IRepository<TEntity>
-         where TEntity : class
+         where TEntity : class, IEntity
     {
         protected readonly TRepository repository;
 

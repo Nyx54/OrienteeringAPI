@@ -21,7 +21,7 @@ namespace OrienteeringAPI.Data
             _configuration = configuration;
         }
 
-        public string GenerateJwtToken(string userName, string role)
+        public string GenerateJwtToken(string userName)
         {
             var appSettingsSection = _configuration.GetSection("AppSettings");
             var keyByteArray = Encoding.ASCII.GetBytes(appSettingsSection.GetValue<string>(_Secret));
@@ -35,8 +35,7 @@ namespace OrienteeringAPI.Data
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.NameIdentifier, userName.ToString()),
-                    new Claim(ClaimTypes.Role, role.ToString())
+                    new Claim(ClaimTypes.NameIdentifier, userName.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 Issuer = myIssuer,
