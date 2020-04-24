@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OrienteeringModels.Dtos
+namespace OrienteeringModels.Dtos.Interfaces
 {
     public interface IEntity
     {

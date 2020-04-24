@@ -5,6 +5,7 @@ using OrienteeringAPI.Errors;
 using OrienteeringAPI.Repositories.Base;
 using OrienteeringAPI.Services.Base;
 using OrienteeringModels.Dtos;
+using OrienteeringModels.Dtos.Interfaces;
 using System;
 using System.Collections;
 using System.Collections.Generic;

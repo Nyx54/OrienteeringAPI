@@ -1,8 +1,6 @@
 ﻿using OrienteeringAPI.Repositories.Base;
-using OrienteeringModels.Dtos;
-using System;
+using OrienteeringModels.Dtos.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OrienteeringAPI.Services.Base

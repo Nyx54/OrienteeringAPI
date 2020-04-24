@@ -6,13 +6,15 @@ INSERT INTO [dbo].[OrienteeringUser]
            ,[FirstName]
            ,[LastName]
            ,[Password]
-           ,[Profil])
+           ,[Profil]
+           ,[TeamId])
      VALUES
            ('lchapelo'
            ,'Lucas'
            ,'Chapelot'
            ,'mdp'
-           ,'A')
+           ,'A'
+           , 1)
 GO
 
 SELECT * FROM LogAPI

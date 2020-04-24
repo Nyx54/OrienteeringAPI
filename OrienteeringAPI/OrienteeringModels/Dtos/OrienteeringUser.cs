@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OrienteeringModels.Dtos.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace OrienteeringModels.Dtos
 {
@@ -11,5 +12,6 @@ namespace OrienteeringModels.Dtos
         public string LastName { get; set; }
         public string Password { get; set; }
         public char Profil { get; set; }
+        public int TeamId { get; set; }
     }
 }

@@ -1,8 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using OrienteeringAPI.Data;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
 
 namespace OrienteeringAPI.Repositories.Base

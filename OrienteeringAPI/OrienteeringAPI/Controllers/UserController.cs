@@ -70,4 +70,4 @@ namespace OrienteeringAPI.Controllers
         }
     }
 }
-}
+
