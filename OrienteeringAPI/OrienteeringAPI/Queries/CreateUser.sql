@@ -5,6 +5,7 @@ CREATE TABLE OrienteeringUser
 	FirstName NVARCHAR(MAX),
 	LastName NVARCHAR(MAX),
 	Password NVARCHAR(MAX),
-	Profil CHAR,
+	Profil NVARCHAR(1),
+	TeamId BIGINT,
 	PRIMARY KEY(Id)
 )

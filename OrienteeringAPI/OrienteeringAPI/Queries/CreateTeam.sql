@@ -1,0 +1,9 @@
+﻿CREATE TABLE OrienteeringTeam
+(
+	Id BIGINT NOT NULL IDENTITY(1, 1),
+	Name NVARCHAR(MAX),
+	ShortName NVARCHAR(MAX),
+	Code BIGINT,
+	LeagueId BIGINT,
+	PRIMARY KEY(Id)
+)

@@ -44,7 +44,7 @@ namespace OrienteeringAPI.Controllers.Base
 
         // GET: api/[controller]/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TEntity>> Get(long id, string IdCentre)
+        public async Task<ActionResult<TEntity>> Get(long id)
         {
             var log = await _logRequestRepository.Add(CreateRequestLog());
             var entity = await service.Get(id);

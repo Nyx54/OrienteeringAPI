@@ -10,5 +10,6 @@ namespace OrienteeringModels.Dtos
         public string Name { get; set; }
         public string ShortName { get; set; }
         public long Code { get; set; }
+        public long LeagueId { get; set; }
     }
 }

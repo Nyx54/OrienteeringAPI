@@ -11,7 +11,8 @@ namespace OrienteeringModels.Dtos
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Password { get; set; }
-        public char Profil { get; set; }
-        public int TeamId { get; set; }
+        [MaxLength(1)]
+        public string Profil { get; set; }
+        public long TeamId { get; set; }
     }
 }

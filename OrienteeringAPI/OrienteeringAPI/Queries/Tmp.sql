@@ -17,5 +17,24 @@ INSERT INTO [dbo].[OrienteeringUser]
            , 1)
 GO
 
-SELECT * FROM LogAPI
+INSERT INTO [dbo].[OrienteeringTeam]
+           ([Name]
+           ,[ShortName]
+           ,[Code]
+           ,[LeagueId])
+     VALUES
+           ('SO Lunéville'
+           ,'SOL'
+           ,5407
+           ,1)
+GO
+
+INSERT INTO [dbo].[OrienteeringLeague]
+           ([Name]
+           ,[ShortName])
+     VALUES
+           ('League Grand-Est'
+		   ,'LGECO')
+GO
+
 
