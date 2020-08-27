@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace OrienteeringModels.Data
+﻿namespace OrienteeringModels.Data
 {
     public enum RaceFormat
     {
-        Middle, Long, Sprint, Relay
+        Middle = 0, Long = 1, Sprint = 2, Relay = 3
     };
 }

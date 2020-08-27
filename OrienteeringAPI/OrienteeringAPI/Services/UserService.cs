@@ -3,7 +3,6 @@ using OrienteeringAPI.Repositories;
 using OrienteeringAPI.Services.Base;
 using OrienteeringModels.Dtos;
 using OrienteeringModels.Models;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,6 +28,8 @@ namespace OrienteeringAPI.Services
 
             if (loginRequestModel.Password == user.Password)
             {
+                loginResult.Login = user.Login;
+                loginResult.Profil = user.Profil;
                 loginResult.Token = _TokenProvider.GenerateJwtToken(user.Login);
             }
 

@@ -23,11 +23,12 @@ namespace OrienteeringAPI.Data
 
             modelBuilder.Entity<OrienteeringLeague>()
                .HasKey(Dto => new { Dto.Id });
+            modelBuilder.Entity<OrienteeringRace>()
+               .HasKey(Dto => new { Dto.Id });
             modelBuilder.Entity<OrienteeringTeam>()
                .HasKey(Dto => new { Dto.Id });
             modelBuilder.Entity<OrienteeringUser>()
                .HasKey(Dto => new { Dto.Id });
-
 
         }
 
@@ -37,6 +38,7 @@ namespace OrienteeringAPI.Data
         public DbSet<LogAPI> LogAPI { get; set; }
 
         public DbSet<OrienteeringLeague> OrienteeringLeague { get; set; }
+        public DbSet<OrienteeringRace> OrienteeringRace { get; set; }
         public DbSet<OrienteeringTeam> OrienteeringTeam { get; set; }
         public DbSet<OrienteeringUser> OrienteeringUser { get; set; }
 

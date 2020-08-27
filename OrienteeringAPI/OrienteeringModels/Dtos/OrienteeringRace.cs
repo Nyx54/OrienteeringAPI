@@ -1,5 +1,6 @@
 ﻿using OrienteeringModels.Data;
 using OrienteeringModels.Dtos.Interfaces;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace OrienteeringModels.Dtos
@@ -11,5 +12,10 @@ namespace OrienteeringModels.Dtos
         public RaceFormat RaceFormat { get; set; }
         public long TeamOrganizer { get; set; }
         public long Tracer { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public string City { get; set; }
+        public DateTime CompetitionDate { get; set; }
+        public TimeSpan CompetitionStart { get; set; }
     }
 }

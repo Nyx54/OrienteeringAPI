@@ -38,6 +38,7 @@ namespace OrienteeringAPI
             #region Repositories
 
             services.AddScoped<LeagueRepository>();
+            services.AddScoped<RaceRepository>();
             services.AddScoped<TeamRepository>();
             services.AddScoped<UserRepository>();
 
@@ -46,6 +47,7 @@ namespace OrienteeringAPI
             #region Services
 
             services.AddScoped<LeagueService>();
+            services.AddScoped<RaceService>();
             services.AddScoped<TeamService>();
             services.AddScoped<UserService>();
 
