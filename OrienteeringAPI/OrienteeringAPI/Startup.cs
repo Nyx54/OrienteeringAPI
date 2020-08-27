@@ -12,6 +12,7 @@ using OrienteeringAPI.Data.Base;
 using OrienteeringAPI.Repositories;
 using OrienteeringAPI.Repositories.Base;
 using OrienteeringAPI.Services;
+using OrienteeringAPI.Services.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -39,8 +40,9 @@ namespace OrienteeringAPI
 
             services.AddScoped<LeagueRepository>();
             services.AddScoped<RaceRepository>();
+            services.AddScoped<RunnerRepository>();
             services.AddScoped<TeamRepository>();
-            services.AddScoped<UserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             #endregion
 
@@ -48,8 +50,9 @@ namespace OrienteeringAPI
 
             services.AddScoped<LeagueService>();
             services.AddScoped<RaceService>();
+            services.AddScoped<RunnerService>();
             services.AddScoped<TeamService>();
-            services.AddScoped<UserService>();
+            services.AddScoped<IUserService, UserService>();
 
             #endregion
 

@@ -6,6 +6,7 @@ DELETE FROM [dbo].[OrienteeringLeague]
 DELETE FROM [dbo].[OrienteeringTeam]
 DELETE FROM [dbo].[OrienteeringColorCategory]
 DELETE FROM [dbo].[OrienteeringAgeCategory]
+DELETE FROM [dbo].[OrienteeringRunner]
 DELETE FROM [dbo].[OrienteeringUser]
 DELETE FROM [dbo].[OrienteeringRaceFormat]
 DELETE FROM [dbo].[OrienteeringRace]
@@ -86,7 +87,7 @@ INSERT INTO [dbo].[OrienteeringAgeCategory]
 		   ,34)
 GO
 
--- User
+-- Runner
 DECLARE @TeamSOL BIGINT = (SELECT Id FROM [dbo].[OrienteeringTeam] WHERE ShortName = 'SOL')
 DECLARE @TeamSCAPA BIGINT = (SELECT Id FROM [dbo].[OrienteeringTeam] WHERE ShortName = 'SCAPA')
 DECLARE @VioletCourt BIGINT = (SELECT Id FROM [dbo].[OrienteeringColorCategory] WHERE ShortName = 'VC')
@@ -94,72 +95,68 @@ DECLARE @H21 BIGINT = (SELECT Id FROM [dbo].[OrienteeringAgeCategory] WHERE Shor
 DECLARE @Noir BIGINT = (SELECT Id FROM [dbo].[OrienteeringColorCategory] WHERE ShortName = 'N')
 DECLARE @D21 BIGINT = (SELECT Id FROM [dbo].[OrienteeringAgeCategory] WHERE ShortName = 'D21')
 
-INSERT INTO [dbo].[OrienteeringUser]
-           ([Login]
-           ,[FirstName]
+INSERT INTO [dbo].[OrienteeringRunner]
+           ([FirstName]
            ,[LastName]
-           ,[Password]
-           ,[Profil]
            ,[TeamId]
            ,[Sex]
            ,[BirthDate]
            ,[CategoryId]
 		   ,[FavoriteColor])
      VALUES
-           ('lchapelo'
-           ,'Lucas'
+           ('Lucas'
            ,'Chapelot'
-           ,'mdp'
-           ,'A'
            , @TeamSOL
 		   ,CAST(1 AS BIT)
 		   ,'23-09-1994'
 		   ,@H21
 		   ,@VioletCourt)
-INSERT INTO [dbo].[OrienteeringUser]
-           ([Login]
-           ,[FirstName]
+INSERT INTO [dbo].[OrienteeringRunner]
+           ([FirstName]
            ,[LastName]
-           ,[Password]
-           ,[Profil]
            ,[TeamId]
            ,[Sex]
            ,[BirthDate]
            ,[CategoryId]
 		   ,[FavoriteColor])
      VALUES
-           ('test'
-           ,'Madame'
+           ('Madame'
            ,'Testeuse'
-           ,NULL
-           ,NULL
            , @TeamSOL
 		   ,CAST(0 AS BIT)
 		   ,'30-01-1996'
 		   ,@D21
 		   ,NULL)
-INSERT INTO [dbo].[OrienteeringUser]
-           ([Login]
-           ,[FirstName]
+INSERT INTO [dbo].[OrienteeringRunner]
+           ([FirstName]
            ,[LastName]
-           ,[Password]
-           ,[Profil]
            ,[TeamId]
            ,[Sex]
            ,[BirthDate]
            ,[CategoryId]
 		   ,[FavoriteColor])
      VALUES
-           ('test2'
-           ,'Mister'
+           ('Mister'
            ,'Long'
-           ,NULL
-           ,Null
-           , @TeamSCAPA
+           ,@TeamSCAPA
 		   ,CAST(1 AS BIT)
 		   ,Null
 		   ,Null
 		   ,@Noir)
+GO
+
+-- User
+DECLARE @chapel BIGINT = (SELECT Id FROM [dbo].[OrienteeringRunner] WHERE FirstName = 'Lucas' AND LastName = 'Chapelot')
+INSERT INTO [dbo].[OrienteeringUser]
+           ( [Id]
+		   ,[Login]
+           ,[Password]
+		   ,[Profil])
+     VALUES
+           (@chapel
+		   ,'lchapelo'
+		   ,'mdp'
+		   ,'A')
 GO
 
 -- RaceFormat
@@ -180,7 +177,7 @@ GO
 
 
 DECLARE @LD BIGINT = (SELECT Id FROM [dbo].[OrienteeringRaceFormat] WHERE ShortName = 'LD')
-DECLARE @Tarcer BIGINT = (SELECT Id FROM [dbo].[OrienteeringUser] WHERE Login = 'test')
+DECLARE @Tarcer BIGINT = (SELECT Id FROM [dbo].[OrienteeringRunner] WHERE FirstName = 'Madame' AND LastName = 'Testeuse')
 DECLARE @TeamSOL BIGINT = (SELECT Id FROM [dbo].[OrienteeringTeam] WHERE ShortName = 'SOL')
 -- Race
 INSERT INTO [dbo].[OrienteeringRace]

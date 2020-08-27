@@ -1,16 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrienteeringAPI.Errors;
 using OrienteeringAPI.Repositories.Base;
 using OrienteeringAPI.Services.Base;
-using OrienteeringModels.Dtos;
 using OrienteeringModels.Dtos.Interfaces;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OrienteeringAPI.Controllers.Base
@@ -36,9 +30,9 @@ namespace OrienteeringAPI.Controllers.Base
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TEntity>>> Get()
         {
-            var log = await _logRequestRepository.Add(CreateRequestLog());
+            var log = await _logRequestRepository.Add(LogApiGenerator.CreateRequestLog(Request));
             var result = await service.GetAll();
-            await _logRequestRepository.Update(UpdateResponseLog(ref log, result));
+            await _logRequestRepository.Update(LogApiGenerator.UpdateResponseLog(ref log, result));
             return result;
         }
 
@@ -46,13 +40,13 @@ namespace OrienteeringAPI.Controllers.Base
         [HttpGet("{id}")]
         public async Task<ActionResult<TEntity>> Get(long id)
         {
-            var log = await _logRequestRepository.Add(CreateRequestLog());
+            var log = await _logRequestRepository.Add(LogApiGenerator.CreateRequestLog(Request));
             var entity = await service.Get(id);
             if (entity == null)
             {
                 return NotFound();
             }
-            await _logRequestRepository.Update(UpdateResponseLog(ref log, entity));
+            await _logRequestRepository.Update(LogApiGenerator.UpdateResponseLog(ref log, entity));
             return entity;
         }
 
@@ -87,75 +81,5 @@ namespace OrienteeringAPI.Controllers.Base
             }
             return entity;
         }
-
-        protected LogAPI UpdateResponseLog(ref LogAPI log, object responseObject, string exceptionMessage = null)
-        {
-            StringBuilder ResponseBody = new StringBuilder($"{{{Environment.NewLine}");
-
-            var objectType = responseObject.GetType();
-            if (responseObject is IList && objectType.IsGenericType && objectType.GetGenericTypeDefinition().IsAssignableFrom(typeof(List<>)))
-            {
-                Type elementType = objectType.GenericTypeArguments.Single();
-                var count = ((IList)responseObject).Count;
-                ResponseBody.Append($"List of {elementType}{Environment.NewLine}");
-                ResponseBody.Append($"Number of elements: {count}");
-                ResponseBody.Append($"{Environment.NewLine}}}");
-            }
-            else
-            {
-                objectType.GetProperties().ToList().ForEach(p =>
-                ResponseBody.Append($"{p.Name}: {p.GetValue(responseObject)}{Environment.NewLine}"));
-                ResponseBody.Append($"{Environment.NewLine}}}");
-            }
-
-            log.Response = ResponseBody.ToString();
-            if (responseObject != null && responseObject is ErrorModel)
-            {
-                log.StatusCode = ((ErrorModel)responseObject).StatusCode;
-            }
-            else
-            {
-                log.StatusCode = StatusCodes.Status200OK;
-            }
-            log.RespondedOn = DateTime.Now;
-
-            if (!string.IsNullOrEmpty(exceptionMessage))
-            {
-                log.Exception = exceptionMessage;
-            }
-
-            return log;
-        }
-
-        protected LogAPI CreateRequestLog(object requestBody = null)
-        {
-            try
-            {
-                var log = new LogAPI
-                {
-                    Path = Request.Path,
-                    Method = Request.Method,
-                    QueryString = Request.QueryString.ToString()
-                };
-
-                if (requestBody != null)
-                {
-                    StringBuilder listOfProperties = new StringBuilder($"{{{Environment.NewLine}");
-
-                    requestBody.GetType().GetProperties().ToList().ForEach(p =>
-                    listOfProperties.Append($"{p.Name}: {p.GetValue(requestBody)}{Environment.NewLine}"));
-                    listOfProperties.Append($"{Environment.NewLine}}}");
-
-                    log.Body = listOfProperties.ToString();
-                }
-                log.RequestedOn = DateTime.Now;
-                return log;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-
     }
 }

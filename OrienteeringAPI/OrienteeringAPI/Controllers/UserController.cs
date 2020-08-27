@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OrienteeringAPI.Controllers.Base;
 using OrienteeringAPI.Errors;
 using OrienteeringAPI.Repositories.Base;
-using OrienteeringAPI.Services;
+using OrienteeringAPI.Services.Base;
 using OrienteeringModels.Dtos;
 using OrienteeringModels.Models;
 using System;
@@ -15,10 +14,15 @@ namespace OrienteeringAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : AbstractBaseController<OrienteeringUser, UserService>
+    public class UserController : ControllerBase
     {
-        public UserController(UserService service, ILogRepository logRequestRepository) : base(service, logRequestRepository)
+        protected readonly IUserService service;
+        protected readonly ILogRepository _logRequestRepository;
+
+        public UserController(IUserService service, ILogRepository logRequestRepository)
         {
+            this.service = service;
+            this._logRequestRepository = logRequestRepository;
         }
 
         //// GET: api/[controller]/Login
@@ -31,7 +35,7 @@ namespace OrienteeringAPI.Controllers
         [ProducesResponseType(500)]
         public async Task<ActionResult<LoginResultModel>> LoginRequest([FromBody] LoginRequestModel loginRequestModel)
         {
-            var log = await _logRequestRepository.Add(CreateRequestLog(new LoginRequestModel()
+            var log = await _logRequestRepository.Add(LogApiGenerator.CreateRequestLog(Request, new LoginRequestModel()
             {
                 Login = loginRequestModel.Login,
                 Password = (string.IsNullOrEmpty(loginRequestModel.Password)) ? string.Empty : "XXXXX"
@@ -42,29 +46,29 @@ namespace OrienteeringAPI.Controllers
                     string.IsNullOrEmpty(loginRequestModel.Password))
                 {
                     var error = GenerateError.BadRequestError(loginRequestModel.GetType().GetProperties().ToList().Where(p => p.GetValue(loginRequestModel) == null).Select(p => p.Name).ToList());
-                    await _logRequestRepository.Update(UpdateResponseLog(ref log, error));
+                    await _logRequestRepository.Update(LogApiGenerator.UpdateResponseLog(ref log, error));
                     return BadRequest(error);
                 }
-                var loginResult = await base.service.LoginRequest(loginRequestModel);
+                var loginResult = await service.LoginRequest(loginRequestModel);
                 if (loginResult == null)
                 {
                     var error = GenerateError.ObjectNotFound<OrienteeringUser>();
-                    await _logRequestRepository.Update(UpdateResponseLog(ref log, error));
+                    await _logRequestRepository.Update(LogApiGenerator.UpdateResponseLog(ref log, error));
                     return NotFound(error);
                 }
                 if (string.IsNullOrEmpty(loginResult.Token))
                 {
                     var error = GenerateError.LoginError();
-                    await _logRequestRepository.Update(UpdateResponseLog(ref log, error));
+                    await _logRequestRepository.Update(LogApiGenerator.UpdateResponseLog(ref log, error));
                     return Unauthorized(error);
                 }
-                await _logRequestRepository.Update(UpdateResponseLog(ref log, loginResult));
+                await _logRequestRepository.Update(LogApiGenerator.UpdateResponseLog(ref log, loginResult));
                 return loginResult;
             }
             catch (Exception e)
             {
                 var error = GenerateError.UnexpectedError();
-                await _logRequestRepository.Update(UpdateResponseLog(ref log, error, e?.Message));
+                await _logRequestRepository.Update(LogApiGenerator.UpdateResponseLog(ref log, error, e?.Message));
                 return StatusCode(StatusCodes.Status500InternalServerError, error);
             }
         }
