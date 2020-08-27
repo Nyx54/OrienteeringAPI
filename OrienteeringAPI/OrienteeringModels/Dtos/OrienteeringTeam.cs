@@ -7,9 +7,11 @@ namespace OrienteeringModels.Dtos
     {
         [Required]
         public long Id { get; set; }
+        [MaxLength(256)]
         public string Name { get; set; }
+        [MaxLength(12)]
         public string ShortName { get; set; }
-        public long Code { get; set; }
+        public int Code { get; set; }
         public long LeagueId { get; set; }
     }
 }

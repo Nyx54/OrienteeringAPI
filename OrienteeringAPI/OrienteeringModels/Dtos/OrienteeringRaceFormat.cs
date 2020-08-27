@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OrienteeringModels.Dtos
 {
-    public class OrienteeringLeague : IEntity
+    public class OrienteeringRaceFormat : IEntity
     {
         [Required]
         public long Id { get; set; }

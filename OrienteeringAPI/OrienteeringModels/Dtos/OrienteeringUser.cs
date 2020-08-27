@@ -1,4 +1,5 @@
 ﻿using OrienteeringModels.Dtos.Interfaces;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace OrienteeringModels.Dtos
@@ -13,6 +14,10 @@ namespace OrienteeringModels.Dtos
         public string Password { get; set; }
         [MaxLength(1)]
         public string Profil { get; set; }
-        public long TeamId { get; set; }
+        public long? TeamId { get; set; }
+        public bool Sex { get; set; }
+        public DateTime? BirthDate { get; set; }
+        public long? CategoryId { get; set; }
+        public long? FavoriteColor { get; set; }
     }
 }

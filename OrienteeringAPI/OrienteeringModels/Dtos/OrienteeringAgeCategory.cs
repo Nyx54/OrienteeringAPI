@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OrienteeringModels.Dtos
 {
-    public class OrienteeringLeague : IEntity
+    public class OrienteeringAgeCategory : IEntity
     {
         [Required]
         public long Id { get; set; }
@@ -11,5 +11,8 @@ namespace OrienteeringModels.Dtos
         public string Name { get; set; }
         [MaxLength(12)]
         public string ShortName { get; set; }
+        public bool Sex { get; set; }
+        public int AgeMin { get; set; }
+        public int AgeMax { get; set; }
     }
 }
