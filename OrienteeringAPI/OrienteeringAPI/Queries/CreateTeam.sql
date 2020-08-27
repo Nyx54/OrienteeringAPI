@@ -10,5 +10,5 @@
 GO
 CREATE UNIQUE INDEX TeamName ON OrienteeringTeam (Name)
 CREATE UNIQUE INDEX TeamShortName ON OrienteeringTeam (ShortName)
-CREATE UNIQUE INDEX TeamLeague ON OrienteeringTeam (LeagueId)
+CREATE INDEX TeamLeague ON OrienteeringTeam (LeagueId)
 GO
